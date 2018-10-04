@@ -4,9 +4,9 @@
     <meta charset="utf-8"/>
 
     {% if context.player_name %}
-        <title>Screenly OSE - {{ context.player_name }}</title>
+        <title>Moult Immédiat - {{context.player_name}}}</title>
     {% else %}
-        <title>Screenly OSE</title>
+        <title>Moult Immédiat</title>
     {% endif %}
 
     <link href="/static/favicons/apple-touch-icon-57x57.png" rel="apple-touch-icon-precomposed" sizes="57x57"/>
@@ -111,7 +111,7 @@
                 <a class="confirm-delete btn btn-danger" href="#">Delete</a>
             </div>
             <div class="float-right">
-                <a class="cancel-delete btn btn-outline-secondary" href="#">Cancel</a>
+                <a class="cancel-delete btn btn-outline-secondary" href="#">Annuler</a>
             </div>
         </div>
     </script>
@@ -125,7 +125,7 @@
             <div class="alert alert-danger">
                 <button class="close" data-dismiss="alert" type="button">&times;</button>
                 <span class="msg">
-            The operation failed. Please reload the page and try again.
+            L'opération a échoué, rechargez la page et éssayez à nouveau.
           </span>
             </div>
         </div>
@@ -137,7 +137,7 @@
                 <div class="modal-content">
                     <div class="form-horizontal">
                         <div class="modal-header">
-                            <h3 id="modalLabel">Add Asset</h3>
+                            <h3 id="modalLabel">Ajouter scène</h3>
                         </div>
                         <div class="modal-body">
                             <div class="asset-location add">
@@ -148,7 +148,7 @@
                                                 <a class="nav-link" href="#tab-uri">URL</a>
                                             </li>
                                             <li class="tabnav-file_upload nav-item">
-                                                <a class="nav-link" href="#tab-file_upload">Upload</a>
+                                                <a class="nav-link" href="#tab-file_upload">Télécharger</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -157,13 +157,13 @@
                                                 <div class="control-group">
                                                     <div class="filedrop">
                                                         <div class="upload-header">
-                                                            <button class="btn">Add Files..</button>
+                                                            <button class="btn">Ajouter fichiers</button>
                                                             <input name="file_upload" type="file"/>
                                                             <br/>
-                                                            or
+                                                            ou
                                                         </div>
                                                         <div>
-                                                            drop files here to upload
+                                                            Déplacez vos fichiers ici
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,7 +174,7 @@
                             </div>
                             <form id="add-form">
                                 <div class="form-group row uri">
-                                    <label class="col-4 col-form-label">Asset URL</label>
+                                    <label class="col-4 col-form-label">Scène URL</label>
                                     <div class="col-7 controls">
                                         <input class="form-control" name="uri"
                                                placeholder="Public URL to this asset's location" type="text"/>
@@ -182,20 +182,20 @@
                                 </div>
                                 <div class="asset-location edit" style="display:none">
                                     <div class="form-group row name">
-                                        <label class="col-4 col-form-label">Name</label>
+                                        <label class="col-4 col-form-label">nom</label>
                                         <div class="col-7">
                                             <input class="form-control" name="name"
-                                                   placeholder="Nickname for this asset" type="text"/>
+                                                   placeholder="Nom de cette scène" type="text"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-4 col-form-label">Asset Location</label>
+                                        <label class="col-4 col-form-label">Emplacement de la scène</label>
                                         <div class="col-8 controls">
                                             <div class="uri-text first"></div>
                                         </div>
                                     </div>
                                     <div class="form-group row mimetype">
-                                        <label class="col-4 col-form-label">Asset Type</label>
+                                        <label class="col-4 col-form-label">Type de scène</label>
                                         <div class="col-4 controls">
                                             <select class="mime-select form-control" name="mimetype">
                                                 <option value="webpage">Webpage</option>
@@ -222,7 +222,7 @@
                                     </div>
                                     <div id="manul_date">
                                         <div class="form-group row start_date">
-                                            <label class="col-4 col-form-label">Start Date</label>
+                                            <label class="col-4 col-form-label">Date de début</label>
                                             <div class="controls col-7">
                                                 <input class="form-control date" name="start_date_date" type="text"
                                                        style="margin-right:5px"/>
@@ -231,7 +231,7 @@
                                             <input name="start_date" type="hidden"/>
                                         </div>
                                         <div class="form-group row end_date">
-                                            <label class="col-4 col-form-label">End Date</label>
+                                            <label class="col-4 col-form-label">Date de fin</label>
                                             <div class="controls col-7">
                                                 <input class="form-control date" name="end_date_date" type="text"
                                                        style="margin-right:5px"/>
@@ -241,10 +241,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group row duration">
-                                        <label class="col-4 col-form-label">Duration</label>
+                                        <label class="col-4 col-form-label">Durée</label>
                                         <div class="col-7 controls">
                                             <input class="form-control" name="duration" type="number"/>
-                                            seconds
+                                            secondes
                                             &nbsp;
                                         </div>
                                     </div>
@@ -326,28 +326,12 @@
 <div class="navbar navbar-expand-lg fixed-top bg-primary">
     <div class="container">
         <a class="brand" href="/">
-            <img src="static/img/screenly_ose_logo.png"/>
+            <img alt="Brand" src="static/img/screenly_ose_logo.png" style="width: 940px; height: 80px;">
         </a>
         <ul class="nav float-right">
-            {% if not context.up_to_date %}
-                <li class="update-available">
-                    <a href="http://www.screenlyapp.com/ose.html#upgrade">
-                        <i class="fas fa-arrow-circle-down"></i>
-                        Update Available
-                    </a>
-                </li>
-            {% endif %}
+           
             <li>
-                <a href="/settings">
-                    <i class="fas fa-cogs"></i>
-                    Settings
-                </a>
-            </li>
-            <li class="divider-vertical"></li>
-            <li>
-                <a href="/system_info">
-                    <i class="fas fa-tasks"></i>
-                    System Info
+               
                 </a>
             </li>
         </ul>
@@ -361,18 +345,18 @@
                 <div class="float-right">
                     <a id="previous-asset-button" class="btn btn-outline-secondary" href="#">
                         <i class="fas fa-fast-backward"></i>
-                        Previous Asset
+                        Scène précédente
                     </a>
                     <a id="next-asset-button" class="btn btn-outline-secondary" href="#">
                         <i class="fas fa-fast-forward"></i>
-                        Next Asset
+                        Scène suivante
                     </a>
                     <a id="add-asset-button" class="btn btn-primary" href="#">
                         <i class="fas fa-plus"></i>
-                        Add Asset
+                        Ajouter scène
                     </a>
                 </div>
-                Schedule Overview
+              
             </h1>
             {% if context.player_name %}
                 <h2>{{ context.player_name }}</h2>
@@ -384,14 +368,14 @@
         <div class="col-12">
             <section>
                 <div class="header bg-primary">
-                    Active assets
+                    Scènes actives
                 </div>
                 <table class="table table-striped active-table">
                     <thead style="display:none">
                     <tr>
-                        <th class="asset_row_name">Name</th>
-                        <th style="width:21%">Start</th>
-                        <th style="width:21%">End</th>
+                        <th class="asset_row_name">Nom</th>
+                        <th style="width:21%">Début</th>
+                        <th style="width:21%">Fin</th>
                         <th style="width:13%"></th>
                         <th style="width:7%"></th>
                     </tr>
@@ -403,14 +387,14 @@
         <div class="col-12">
             <section>
                 <div class="header bg-primary">
-                    Inactive assets
+                    Scènes inactives
                 </div>
                 <table class="table table-striped inactive-table">
                     <thead style="display:none">
                     <tr>
-                        <th class="asset_row_name">Name</th>
-                        <th style="width:21%">Start</th>
-                        <th style="width:21%">End</th>
+                        <th class="asset_row_name">Nom</th>
+                        <th style="width:21%">Début</th>
+                        <th style="width:21%">Fin</th>
                         <th style="width:13%"></th>
                         <th style="width:7%"></th>
                     </tr>
@@ -425,18 +409,18 @@
     <div class="container">
         <div class="row">
             <div class="col-6">
-            <span>Want to get more out of Screenly?
+            <span>
               <a class="brand"
                  href="http://www.screenlyapp.com/?utm_source=Screenly-OSE&amp;utm_medium=root-page&amp;utm_campaign=OSE"
                  target="_blank">
-                <strong>Try Screenly Pro.</strong>
+                <strong></strong>
               </a></span>
             </div>
             <div class="col-6">
             <span>
               <a href="javascript://" id="subsribe-form-container" data-html="true" data-trigger="focus"
                  data-placement="top">
-                <strong>Get the latest Screenly news directly in your mailbox.</strong>
+                <strong></strong>
               </a>
             </span>
             </div>
@@ -447,26 +431,13 @@
 <div id="footer">
     <div class="container">
         <div class="copy">
-            &copy; Screenly, Inc.
+            Moult Immédiat
         </div>
-        <a id="screenly-logo" href="http://screenly.io/" target="_blank">
-            Screenly.io
+        <a id="screenly-logo" href="http://www.ionis-group.com/" target="_blank">
+            Ionis-group.com
         </a>
     </div>
 </div>
-
-{% if is_demo %}
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37846380-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'UA-37846380-3');
-    </script>
-{% endif %}
 
 </body>
 
