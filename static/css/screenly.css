@@ -92,9 +92,6 @@ section .header {
 #request-error {
   z-index: 10000; }
   #request-error .alert {
-    position: fixed;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 2px;
     width: 400px; }
 
