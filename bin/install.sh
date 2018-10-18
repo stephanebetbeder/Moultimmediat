@@ -53,7 +53,7 @@ else
     echo -e "\n\nIt looks like NetworkManager is not installed. Please install it by running 'sudo apt install -y network-manager' and then re-run the installation."
     exit 1
   fi
-  
+
   export MANAGE_NETWORK=true
 fi
 
