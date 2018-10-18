@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -*- coding: utf8 -*-
 
 __author__ = "Screenly, Inc"
 __copyright__ = "Copyright 2012-2017, Screenly, Inc"
@@ -11,7 +11,7 @@ from functools import wraps
 from hurry.filesize import size
 import json
 from mimetypes import guess_type
-from os import getenv, makedirs, mkdir, path, remove, rename, statvfs, stat
+from os import getenv, makedirs, mkdir, path, remove, rename, statvfs
 from sh import git
 from subprocess import check_output
 import traceback
@@ -19,7 +19,7 @@ import uuid
 import hashlib
 from base64 import b64encode
 
-from flask import Flask, make_response, render_template, request, send_from_directory, url_for
+from flask import Flask, make_response, render_template, request, send_from_directory
 from flask_cors import CORS
 from flask_restful_swagger_2 import Api, Resource, Schema, swagger
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -38,9 +38,9 @@ from lib.utils import get_video_duration
 from lib.utils import download_video_from_youtube, json_dump
 from lib.utils import url_fails
 from lib.utils import validate_url
-from lib.utils import is_demo_node
 
 from settings import auth_basic, CONFIGURABLE_SETTINGS, DEFAULTS, LISTEN, PORT, settings, ZmqPublisher
+
 
 HOME = getenv('HOME', '/home/pi')
 DISABLE_MANAGE_NETWORK = '.screenly/disable_manage_network'
@@ -302,8 +302,7 @@ def prepare_asset_v1_2(request, asset_id=None):
                 str(get('is_enabled')),
                 get('start_date'),
                 get('end_date')]):
-        raise Exception(
-            "Not enough information provided. Please specify 'name', 'uri', 'mimetype', 'is_enabled', 'start_date' and 'end_date'.")
+        raise Exception("Not enough information provided. Please specify 'name', 'uri', 'mimetype', 'is_enabled', 'start_date' and 'end_date'.")
 
     asset = {
         'name': get('name'),
@@ -361,7 +360,6 @@ def api_response(view):
         except Exception as e:
             traceback.print_exc()
             return api_error(unicode(e))
-
     return api_view
 
 
@@ -817,10 +815,6 @@ class FileAsset(Resource):
         req = Request(request.environ)
         file_upload = req.files.get('file_upload')
         filename = file_upload.filename
-
-        if guess_type(filename)[0].split('/')[0] not in ['image', 'video']:
-            raise Exception("Invalid file type.")
-
         file_path = path.join(settings['assetdir'], filename) + ".tmp"
 
         if 'Content-Range' in request.headers:
@@ -936,19 +930,19 @@ class Info(Resource):
     method_decorators = [api_response, auth_basic]
 
     def get(self):
-        viewlog = None
-        try:
-            viewlog = [line.decode('utf-8') for line in
-                       check_output(['sudo', 'systemctl', 'status', 'screenly-viewer.service', '-n', '20']).split('\n')]
-        except:
-            pass
+        # viewlog = None
+        # try:
+        #     viewlog = [line.decode('utf-8') for line in
+        #                check_output(['sudo', 'systemctl', 'status', 'screenly-viewer.service', '-n', '20']).split('\n')]
+        # except:
+        #     pass
 
         # Calculate disk space
         slash = statvfs("/")
         free_space = size(slash.f_bavail * slash.f_frsize)
 
         return {
-            'viewlog': viewlog,
+            # 'viewlog': viewlog,
             'loadavg': diagnostics.get_load_avg()['15 min'],
             'free_space': free_space,
             'display_info': diagnostics.get_monitor_status(),
@@ -1001,14 +995,14 @@ class AssetContent(Resource):
         'responses': {
             '200': {
                 'description':
-                    '''
-                    The content of the asset.
+                '''
+                The content of the asset.
 
-                    'type' can either be 'file' or 'url'.
+                'type' can either be 'file' or 'url'.
 
-                    In case of a file, the fields 'mimetype', 'filename', and 'content'  will be present.
-                    In case of a URL, the field 'url' will be present.
-                    ''',
+                In case of a file, the fields 'mimetype', 'filename', and 'content'  will be present.
+                In case of a URL, the field 'url' will be present.
+                ''',
                 'schema': AssetContentModel
             }
         }
@@ -1095,7 +1089,6 @@ else:
 def viewIndex():
     player_name = settings['player_name']
     my_ip = get_node_ip()
-    is_demo = is_demo_node()
     resin_uuid = getenv("RESIN_UUID", None)
 
     ws_addresses = []
@@ -1108,12 +1101,13 @@ def viewIndex():
     if resin_uuid:
         ws_addresses.append('wss://{}.resindevice.io/ws/'.format(resin_uuid))
 
-    return template('index.html', ws_addresses=ws_addresses, player_name=player_name, is_demo=is_demo)
+    return template('index.html', ws_addresses=ws_addresses, player_name=player_name)
 
 
 @app.route('/settings', methods=["GET", "POST"])
 @auth_basic
 def settings_page():
+
     context = {'flash': None}
 
     if request.method == "POST":
@@ -1130,8 +1124,8 @@ def settings_page():
             use_auth = request.form.get('use_auth', '') == 'on'
 
             # Handle auth components
-            if settings['password'] != '':  # if password currently set,
-                if new_user != settings['user']:  # trying to change user
+            if settings['password'] != '':    # if password currently set,
+                if new_user != settings['user']:    # trying to change user
                     # should have current password set. Optionally may change password.
                     if current_pass == '':
                         if not use_auth:
@@ -1159,8 +1153,8 @@ def settings_page():
                         raise ValueError("Must supply current password to disable authentication")
                     settings['password'] = ''
 
-            else:  # no current password
-                if new_user != '':  # setting username and password
+            else:        # no current password
+                if new_user != '':    # setting username and password
                     if new_pass != '' and new_pass != new_pass2:
                         raise ValueError("New passwords do not match!")
                     if new_pass == '':
@@ -1174,9 +1168,6 @@ def settings_page():
                 # skip user and password as they should be handled already.
                 if field == "user" or field == "password":
                     continue
-
-                if not value and field in ['default_duration', 'default_streaming_duration']:
-                    value = str(0)
 
                 if isinstance(default, bool):
                     value = value == 'on'
@@ -1213,12 +1204,12 @@ def settings_page():
 @app.route('/system_info')
 @auth_basic
 def system_info():
-    viewlog = None
-    try:
-        viewlog = [line.decode('utf-8') for line in
-                   check_output(['sudo', 'systemctl', 'status', 'screenly-viewer.service', '-n', '20']).split('\n')]
-    except:
-        pass
+    # viewlog = None
+    # try:
+    #     viewlog = [line.decode('utf-8') for line in
+    #                check_output(['sudo', 'systemctl', 'status', 'screenly-viewer.service', '-n', '20']).split('\n')]
+    # except:
+    #     pass
 
     loadavg = diagnostics.get_load_avg()['15 min']
 
@@ -1240,7 +1231,7 @@ def system_info():
     return template(
         'system_info.html',
         player_name=player_name,
-        viewlog=viewlog,
+        # viewlog=viewlog,
         loadavg=loadavg,
         free_space=free_space,
         uptime=system_uptime,
@@ -1280,26 +1271,9 @@ def mistake403(code):
 def mistake404(code):
     return 'Sorry, this page does not exist!'
 
-
 ################################
 # Static
 ################################
-
-
-@app.context_processor
-def override_url_for():
-    return dict(url_for=dated_url_for)
-
-
-def dated_url_for(endpoint, **values):
-    if endpoint == 'static':
-        filename = values.get('filename', None)
-        if filename:
-            file_path = path.join(app.root_path,
-                                  endpoint, filename)
-            if path.isfile(file_path):
-                values['q'] = int(stat(file_path).st_mtime)
-    return url_for(endpoint, **values)
 
 
 @app.route('/static_with_mime/<string:path>')
